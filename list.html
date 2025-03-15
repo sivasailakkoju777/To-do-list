@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO DO LIST</title>
+
+    <style>
+        body{
+            background-color: #1bd844;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container{
+            background-color: #056765;
+            border-radius: 20px;
+            width: 600px;
+            height: 400px;
+            padding: 20px;
+            margin-left: 330px;
+            margin-top: 100px;
+
+        }
+
+        h2{
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            font-size: 24px;
+        }
+
+
+        .creat-list{
+            display: flex;
+            border-radius: 16px;
+        }
+
+        .creat-list input{
+            padding: 16px;
+            flex: 1;
+            border-radius: 16px;
+        }
+
+        #creat-btn{
+            background-color: #089b98;
+            color: #000;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 16px 20px;
+            border-radius: 16px;
+        }
+
+
+        .listitems{
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .listitems li{
+            list-style: none;
+            line-height: 2.5;
+            position: relative;
+        }
+
+        .listitems li::before{
+            content: '🔲';
+            font-size: 16px;
+            padding-right: 12px;
+        }
+        .listitems li.checked::before{
+            content: '☑️';
+            font-size: 16px;
+            padding-right: 12px;
+        }
+        .listitems li.checked{
+            text-decoration: line-through;
+        }
+        .del-btn{
+            background-color: #040404;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            position: absolute;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>TO DO LIST APP</h2>
+        <div class="creat-list">
+            <input type="text" id="listcreate">
+            <button id="creat-btn">Add</button>
+        </div>
+        <ul class="listitems">
+         <!-----  <li>Web design work<span class="del-btn">✖</span></li>
+            <li class="checked">Client meeting 4:00pm<span class="del-btn">✖</span></li>  ---->
+        </ul>
+    </div>
+
+    <script>
+        let allList = document.querySelector('.listitems'); //ul
+        let createList = document.getElementById('listcreate'); //input
+        let createBtn = document.getElementById('creat-btn'); //btn
+
+        createBtn.addEventListener('click', function(){
+            if (createList.value === ""){
+            alert('Enter today work task');
+        } else {
+            //create li
+            let list = document.createElement('li');
+            list.innerText = createList.value;
+            
+            //create span delete btn
+            let spanbtn = document.createElement('span');
+            spanbtn.className = 'del-btn';
+            spanbtn.innerText = 'delete';
+
+            list.appendChild(spanbtn); //li
+
+            allList.appendChild(list); //ul
+        }
+        createList.value ="";
+        savePresentData()
+        });
+
+        allList.addEventListener('click', function(e) {
+            console.log(e);
+            if(e.target.tagName === 'LI') {
+                e.target.classList.toggle('checked');
+                savePresentData();
+            }else if (e.target.tagName === 'SPAN') {
+                e.target.parentElement.remove();
+                savePresentData();
+            }
+        });
+
+       function savePresentData() {
+        localStorage.setItem('data', allList.innerHTML);
+       }
+
+       function showSavedData() {
+        allList.innerHTML = localStorage.getItem('data');
+    }
+    showSavedData();
+    </script>
+</body>
+</html>
